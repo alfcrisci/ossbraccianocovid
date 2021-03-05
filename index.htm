@@ -27,9 +27,8 @@
 #panel {
   border-radius: 25px;
   font-family:   Calibri, sans-serif;
-  text-align: center;
   font:10pt;
-  height: 300px;
+  height: 80%;
   width: 300px;
   background: #fff;
   padding: 5px;
@@ -40,10 +39,69 @@
   z-index: 999
 }
 
+.tooltip {
+  position: absolute;
+  background: rgba(0, 0, 0, .7);
+  color: #fff;
+  padding: 1px 3px;
+  font-size: 8px;
+  white-space: nowrap;
+  z-index: 1;
+}
+
+#rtbraspark {
+  stroke: red;
+  fill: blue;
+}
+
+#rtangspark {
+  stroke: red;
+  fill: blue;
+}
+
+#rttrevspark {
+  stroke: red;
+  fill: blue;
+}
+
+#rtcanspark {
+  stroke: red;
+  fill: blue;
+}
+
+#rtmanzspark {
+  stroke: red;
+  fill: blue;
+}
+#sibraspark {
+  stroke: red;
+  fill: blue;
+}
+
+#siangspark {
+  stroke: red;
+  fill: blue;
+}
+
+#sitrevspark {
+  stroke: red;
+  fill: blue;
+}
+
+#sicanspark {
+  stroke: red;
+  fill: blue;
+}
+
+#simanzspark {
+  stroke: red;
+  fill: blue;
+}
 </style>
 
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
+<script src="https://cdn.rawgit.com/fnando/sparkline/master/dist/sparkline.js"></script>
 <script src="js/leaflet-sidebar.js"></script>
 <script src="js/leaflet.awesome-markers.min.js"></script>
 <script src="js/L.Control.Locate.js" ></script>
@@ -59,13 +117,24 @@
 <script src=" data/timedata.js"></script>
 <script src=" data/values.js"></script>
 
-
-
 </head>
 <body>
 
 <div id='map'></div>
-<div id='panel'></div>
+<div id='panel'>
+<center><h4>Tasso di contagio</h4></center>
+<center><svg id="rtbraspark" class="btc" width="180" height="30" stroke-width="2" "></svg>RT Bracciano</center>
+<center><svg id="rtangspark" class="btc" width="180" height="30" stroke-width="2" "></svg>RT Anguillara</center>
+<center><svg id="rttrevspark" class="btc" width="180" height="30" stroke-width="2" "></svg>RT Trevignano</center>
+<center><svg id="rtcanspark" class="btc" width="180" height="30" stroke-width="2" "></svg>RT Canale M.</center>
+<center><svg id="rtmanzspark" class="btc" width="180" height="30" stroke-width="2""></svg>RT Manziana</center>
+<center><h4>Soglia di incidenza</h4></center>
+<center><svg id="sibraspark"  class="btc" width="180" height="30" stroke-width="2" "></svg>SI Bracciano</center>
+<center><svg id="siangspark"  class="btc" width="180" height="30" stroke-width="2" "></svg>SI Anguillara</center>
+<center><svg id="sitrevspark" class="btc" width="180" height="30" stroke-width="2" "></svg>SI Trevignano</center>
+<center><svg id="sicanspark"   class="btc" width="180" height="30" stroke-width="2" "></svg>SI Canale M.</center>
+<center><svg id="simanzspark" class="btc" width="180" height="30" stroke-width="2""></svg>SI Manziana</center>
+</div>
 
 <script>
 
@@ -140,9 +209,20 @@ L.controlCredits({
 
         }).addTo(map);
 
-$(document).ready(function() {
-  $('#panel').append('<button id="submit">Trends</button>');
-});
+
+
+sparkline.sparkline(document.querySelector("#rtbraspark"), btc, options);
+sparkline.sparkline(document.querySelector("#rtangspark"), btc, options);
+sparkline.sparkline(document.querySelector("#rttrevspark"), btc, options);
+sparkline.sparkline(document.querySelector("#rtcanspark"), btc, options);
+sparkline.sparkline(document.querySelector("#rtmanzspark"), btc, options);
+
+sparkline.sparkline(document.querySelector("#sibraspark"), btc, options);
+sparkline.sparkline(document.querySelector("#siangspark"), btc, options);
+sparkline.sparkline(document.querySelector("#sitrevspark"), btc, options);
+sparkline.sparkline(document.querySelector("#sicanspark"), btc, options);
+sparkline.sparkline(document.querySelector("#simanzspark"), btc, options);
+
 </script>
 
 

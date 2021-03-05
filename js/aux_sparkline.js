@@ -10,7 +10,7 @@ function findClosest(target, tagName) {
   }
 
   return target;
-}
+};
 
 var btc = [
   {name: "Bitcoin", date: "2017-01-01", value: 967.6},
@@ -50,4 +50,4 @@ var options = {
 };
 
 
-sparkline.sparkline(document.querySelector(".btc"), btc, options);
+
