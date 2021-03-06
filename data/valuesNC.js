@@ -1,7 +1,7 @@
 const valuesNC= {
- "NC_Bracciano":       18,
-"NC_Anguillara":       50,
-"NC_Trevignano":        3,
-"NC_Canale":        5,
-"NC_Manziana":        6 
-} ;
+ "NC_Bracciano": [       20,       28,       18,       20,       15,       13,       14,       12,        9,        6,       21 ],
+"NC_Anguillara": [       18,       18,       50,       49,       28,       18,       10,       26,       16,       12,       12 ],
+"NC_Trevignano": [        1,        2,        3,       15,        6,        3,        5,        1,        0,        0,        2 ],
+"NC_Canale": [        3,        0,        5,        0,        1,        3,        1,        2,        6,        0,       11 ],
+"NC_Manziana": [        3,        0,        6,       16,       10,       11,       11,        1,        2,        3,        6 ] 
+}
