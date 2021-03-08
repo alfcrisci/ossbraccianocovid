@@ -93,17 +93,18 @@
 
 var getColorSI = function(value) {
   return value > 100
-    ? "red"
-    : value > 75
-    ? "orange"
-    : value > 0.50
-    ? "yellow"
-    : value > 0.10
-    ? "white"
+    ? "#FB6529"
+    : value >75
+    ? "#FBA829"
+    : value > 50
+    ? "#FBCF29"
+    : value > 25
+    ? "#FBE229"
     : value > 0
-    ? "gray"
-    : "gray";
+    ? "#FBFB29"
+    : "#FBFB29";
 };
+
 
 
 
@@ -127,9 +128,9 @@ $('#sibraspark .chart')
         var idx = ev.sparklines[0].getCurrentRegionFields().offset;
         if (idx) {
             $("#sibraspark .info").html(
-                "Settimana " + data_SI_Bracciano[idx].date 
+                "<strong>Settimana</strong> del " + data_SI_Bracciano[idx].date 
               + "&nbsp;&nbsp;&nbsp; "
-              + "SI :" + data_SI_Bracciano[idx].value+"%");
+              +"<strong>Percentuale Rischio</strong>:" + data_SI_Bracciano[idx].value+"%");
         }
     }).on('mouseout', function() {
         $("#sibraspark .info").html("&nbsp;");
@@ -152,9 +153,9 @@ $('#siangspark .chart')
         var idx = ev.sparklines[0].getCurrentRegionFields().offset;
         if (idx) {
             $("#siangspark .info").html(
-                "Settimana " + data_SI_Anguillara[idx].date 
+                "<strong>Settimana</strong> del " + data_SI_Anguillara[idx].date 
               + "&nbsp;&nbsp;&nbsp; "
-              + "SI :" + data_SI_Anguillara[idx].value+"%");
+              + "<strong>Percentuale Rischio</strong>:" + data_SI_Anguillara[idx].value+"%");
         }
     }).on('mouseout', function() {
         $("#siangspark .info").html("&nbsp;");
@@ -177,9 +178,9 @@ $('#sitrevspark .chart')
         var idx = ev.sparklines[0].getCurrentRegionFields().offset;
         if (idx) {
             $("#sitrevspark .info").html(
-                "Settimana " + data_SI_Trevignano[idx].date 
+                "<strong>Settimana</strong> del " + data_SI_Trevignano[idx].date 
               + "&nbsp;&nbsp;&nbsp; "
-              + "SI :" + data_SI_Trevignano[idx].value+"%");
+              + "<strong>Percentuale Rischio</strong>:" + data_SI_Trevignano[idx].value+"%");
         }
     }).on('mouseout', function() {
         $("#sitrevspark .info").html("&nbsp;");
@@ -202,9 +203,9 @@ $('#sicanspark .chart')
         var idx = ev.sparklines[0].getCurrentRegionFields().offset;
         if (idx) {
             $("#sicanspark .info").html(
-                "Settimana " + data_SI_Canale[idx].date 
+               "<strong>Settimana</strong> del " + data_SI_Canale[idx].date 
               + "&nbsp;&nbsp;&nbsp; "
-              + "SI :" + data_SI_Canale[idx].value+"%");
+              + "<strong>Percentuale Rischio</strong>:"+ data_SI_Canale[idx].value+"%");
         }
     }).on('mouseout', function() {
         $("#sicanspark .info").html("&nbsp;");
@@ -227,9 +228,9 @@ $('#simanzspark .chart')
         var idx = ev.sparklines[0].getCurrentRegionFields().offset;
         if (idx) {
             $("#simanzspark .info").html(
-                "Settimana " + data_SI_Manziana[idx].date 
+                "<strong>Settimana</strong> del " + data_SI_Manziana[idx].date 
               + "&nbsp;&nbsp;&nbsp; "
-              + "SI :" + data_SI_Manziana[idx].value+"%");
+              + "<strong>Percentuale Rischio</strong>:" + data_SI_Manziana[idx].value+"%");
         }
     }).on('mouseout', function() {
         $("#simanzspark .info").html("&nbsp;");
