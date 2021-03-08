@@ -1,2 +1,2 @@
 # ossbraccianocovid
-mappa provvisoria
+mappa per indicatore comunale di soglia incidenza
