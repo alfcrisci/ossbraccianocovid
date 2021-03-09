@@ -52,19 +52,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var getColorSI = function(value) {
-  return value > 100
-    ? "red"
-    : value > 75
-    ? "orange"
-    : value > 0.50
-    ? "yellow"
-    : value > 0.10
-    ? "white"
-    : value > 0
-    ? "gray"
-    : "gray";
-};
+
 
 var getColorSI = function(value) {
   return value > 100
