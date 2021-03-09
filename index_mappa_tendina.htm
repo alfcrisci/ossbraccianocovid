@@ -98,7 +98,7 @@ var layer_incidenza = L.choropleth(datageojson, {
 	  '<strong>Comune</strong>: '  + feature.properties.COMUNE + '<br>' +
           '<strong>Soglia di Incidenza</strong>: ' + feature.properties.soglia_SI + ' nuovi casi su '+ feature.properties.abitanti_SI +' ab.<br><br>'+
           '<strong>Dati rilevati</strong><br><br>  ' +
-          '<strong>Settimana in corso</strong>:  ' + feature.properties.date_p + '<br>' +
+          '<strong>Settimana in corso (dati provvisori)</strong>:  ' + feature.properties.date_p + '<br>' +
           '<strong>Totale nuovi casi</strong>: ' + feature.properties.NC_p + '<br>' +
           '<strong>Percentuale di rischio</strong>: ' + feature.properties.SI_p + '   (%)  <br>' + '<br>' +
           '<strong>Settimana precedente</strong>:' + feature.properties.date + '<br>' + 
