@@ -95,15 +95,15 @@ var layer_incidenza = L.choropleth(datageojson, {
         },
     onEachFeature: function (feature, layer) {
       layer.bindPopup(
-	  '<strong>Comune</strong> : '  + feature.properties.COMUNE + '<br>' +
-          '<strong>Soglia di Incidenza</strong> : ' + feature.properties.soglia_SI + ' su '+ feature.properties.abitanti_SI +' ab.<br><br>'+
+	  '<strong>Comune</strong>: '  + feature.properties.COMUNE + '<br>' +
+          '<strong>Soglia di Incidenza</strong>: ' + feature.properties.soglia_SI + ' nuovi casi su '+ feature.properties.abitanti_SI +' ab.<br><br>'+
           '<strong>Dati rilevati</strong><br><br>  ' +
-          '<strong>Settimana in corso</strong> :  ' + feature.properties.date_p + '<br>' +
-          '<strong>Totale nuovi casi</strong> : ' + feature.properties.NC_p + '<br>' +
-          '<strong>Percentuale di rischio</strong> : ' + feature.properties.SI_p + '   (%)  <br>' + '<br>' +
-          '<strong>Settimana precedente</strong>  :' + feature.properties.date + '<br>' + 
-          '<strong>Totale nuovi casi</strong> : ' + feature.properties.NC_v + '<br>' +
-          '<strong>Percentuale di rischio </strong> : ' + feature.properties.SI_v + '  (%) <br>'      
+          '<strong>Settimana in corso</strong>:  ' + feature.properties.date_p + '<br>' +
+          '<strong>Totale nuovi casi</strong>: ' + feature.properties.NC_p + '<br>' +
+          '<strong>Percentuale di rischio</strong>: ' + feature.properties.SI_p + '   (%)  <br>' + '<br>' +
+          '<strong>Settimana precedente</strong>:' + feature.properties.date + '<br>' + 
+          '<strong>Totale nuovi casi</strong>: ' + feature.properties.NC_v + '<br>' +
+          '<strong>Percentuale di rischio </strong>: ' + feature.properties.SI_v + '  (%) <br>'      
     )}
     }).addTo(map);
 
@@ -121,7 +121,7 @@ let panelID = "my-info-panel"; // dichiara una variabile globale
 var panelContent = {
   id: panelID,
   tab: "<i class='fa fa-bars active'></i>",
-  pane: "<p id='sidebar-content'>Soglia di incidenza</p>",
+  pane: "<p id='sidebar-content'></p>",
   title: "<h2 id='sidebar-title'>Soglia di Incidenza</h2>"
 };
 
@@ -183,7 +183,7 @@ L.control.locate({strings: { title: "Sono qui ora!" }}).addTo(map);
 
 document.getElementById("sidebar-content").innerHTML =
 "<div id ='panel'>"+
-"<center><h4>Tendenza ultime 10 settimane</h4></center>" +
+"<center><h4>Percentuale di rischio ultime 10 settimane</h4></center>" +
 "<div id='sibraspark'>"+
 "<div><div class='chart'></div><div class='info'></div><center><span class='com'>Comune di Bracciano</span></center></div></div>"+
 "<div id='siangspark'>"+
