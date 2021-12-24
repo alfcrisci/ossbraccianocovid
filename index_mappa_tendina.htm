@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Covid 19 Dashboard</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
+<link rel="stylesheet" href="css/leaflet.awesome-markers.css"/>
+<link rel="stylesheet" href="css/leaflet-sidebar.css"/>
+   
+<style>
+   html, body {
+			height: 100%;
+			margin: 0;
+		}
+   #map {
+			width: 100%;
+			height: 100%;
+		}
+
+ #sidebar-content, #sidebar-title {
+            word-break: break-word;
+            margin-right: 50px;
+        }
+       .testpanel { 
+            font-style: italic;
+            text-align: justify;
+            color: #AAA;
+        }
+</style>
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
+<script type="text/javascript" src="js/jquery.sparkline.min.js"></script>
+<script src="js/leaflet.awesome-markers.min.js"></script>
+<script type="text/javascript" src="js/leaflet-sidebar.js"></script>
+<script src="js/L.Control.Locate.js" ></script>
+<script src="js/choropleth.js"></script>
+<script src="js/legendfuncts.js"></script>
+<script src="data/last_comlakebracciano.js"></script>
+<script src="data/SI_vars.js"></script>
+
+</head>
+<body>
+
+<div id='map'></div>
+
+<script>
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+var getColorSI = function(value) {
+  return value > 100
+    ? "#FB6529"
+    : value >75
+    ? "#FBA829"
+    : value > 50
+    ? "#FBCF29"
+    : value > 25
+    ? "#FBE229"
+    : value > 0
+    ? "#FBFB29"
+    : "#FFFF00";
+};
+
+
+var map= L.map('map', {
+		center: [42.09,12.22],
+		zoom: 11
+	});
+
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+	}).addTo(map);
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+var layer_incidenza = L.choropleth(datageojson, {
+        valueProperty: 'SI_v',
+        limits: [0, 25, 50, 75,100,1000],
+        scale: ["gray","#FFFF00","#FBE229","#FBCF29","#FBA829","#FB6529"],
+	steps: 5, // number of breaks or steps in range
+	mode: 'e', // q for quantile, e for equidistant, k for k-means
+	 style: {
+            color: '#fff', // border color
+            weight: 2,
+            fillOpacity: 0.6
+        },
+    onEachFeature: function (feature, layer) {
+      layer.bindPopup(
+	  '<strong>Comune</strong>: '  + feature.properties.COMUNE + '<br>' +
+          '<strong>Soglia di Incidenza</strong>: ' + feature.properties.soglia_SI + ' nuovi casi su '+ feature.properties.abitanti_SI +' ab.<br><br>'+
+          '<strong>Dati rilevati</strong><br><br>  ' +
+          '<strong>Settimana in corso (dati provvisori)</strong>:  ' + feature.properties.date_p + '<br>' +
+          '<strong>Totale nuovi casi</strong>: ' + feature.properties.NC_p + '<br>' +
+          '<strong>Percentuale di rischio</strong>: ' + feature.properties.SI_p + '   (%)  <br>' + '<br>' +
+          '<strong>Settimana precedente</strong>:' + feature.properties.date + '<br>' + 
+          '<strong>Totale nuovi casi</strong>: ' + feature.properties.NC_v + '<br>' +
+          '<strong>Percentuale di rischio </strong>: ' + feature.properties.SI_v + '  (%) <br>'      
+    )}
+    }).addTo(map);
+
+
+var sidebar = L.control
+  .sidebar({
+    container: "sidebar",
+    closeButton: true,
+    position: "right"
+  })
+  .addTo(map);
+
+let panelID = "my-info-panel"; // dichiara una variabile globale
+
+var panelContent = {
+  id: panelID,
+  tab: "<i class='fa fa-bars active'></i>",
+  pane: "<p id='sidebar-content'></p>",
+  title: "<h2 id='sidebar-title'>Soglia di Incidenza</h2>"
+};
+
+sidebar.addPanel(panelContent)
+            // add a tttab with a click callback, initially disabled
+            .addPanel({
+                id:   'mail',
+                tab:  '<i class="fa fa-envelope"></i>',
+                title: 'Contatti',
+                pane: "<p id='sidebar-mail-content'> </p>",
+                button: function() { alert('Mail') },
+                disabled: true,
+            })
+        .addPanel({
+                id: 'click',
+                tab: '<i class="fa fa-info"></i>',
+                title: 'Info',
+                pane: "<p id='sidebar-info-mail-content'> </p>",
+                button: function () { alert('Informazioni') }
+                });
+
+
+map.on("click", function() {
+  sidebar.close(panelID);
+});
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+ layer_incidenza.on('add', function () {
+        // Need setTimeout so that we don't get multiple
+        // onadd/onremove events raised
+        setTimeout(function () {
+            $('#legend_incidenza').show();
+
+        });
+    });
+
+ layer_incidenza.on('remove', function () {
+        // Need setTimeout so that we don't get multiple
+        // onadd/onremove events raised
+        setTimeout(function () {
+            $('#legend_incidenza').hide();
+        });
+    });
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+var layers = { 
+	       [legend_for_choropleth_layer(layer_incidenza, 'Soglia di Incidenza (%)', '', 'legend_incidenza')]: layer_incidenza
+             };
+
+var layersControl = L.control.layers(null, layers,{ position: "topleft",collapsed: true }).addTo(map);
+
+
+L.control.locate({strings: { title: "Sono qui ora!" }}).addTo(map);
+
+document.getElementById("sidebar-content").innerHTML =
+"<div id ='panel'>"+
+"<center><h4>Percentuale di rischio ultime 10 settimane</h4></center>" +
+"<div id='sibraspark'>"+
+"<div><div class='chart'></div><div class='info'></div><center><span class='com'>Comune di Bracciano</span></center></div></div>"+
+"<div id='siangspark'>"+
+"<div><div class='chart'></div><div class='info'></div><center><span class='com'>Comune di Anguillara</span></center></div></div>"+
+"<div id='sitrevspark'>"+
+"<div><div class='chart'></div><div class='info'></div><center><span class='com'>Comune di Trevignano Romano</span></center></div></div>"+
+"<div id='sicanspark'>"+
+"<div><div class='chart'></div><div class='info'></div><center><span class='com'>Comune di Canale Monterano</span></center></div></div>"+
+"<div id='simanzspark'>"+
+"<div><div class='chart'></div><div class='info'></div><center><span class='com'>Comune di Manziana</span></center></div></div>"+
+"</div>";
+
+$('#sibraspark .chart')
+    .sparkline(
+        $.map(data_SI_Bracciano, function(wk) { return wk.value; }),
+        {  type: 'line',
+           height: '50',
+           width: '300',
+           lineColor: 'red',
+           spotColor: '#7f0000',
+           fillColor: getColorSI(data_SI_Bracciano[data_SI_Bracciano.length-1].value),
+           spotRadius: 2.5,
+           chartRangeMax: 100,
+           disableTooltips: true
+  }
+    ).on('sparklineRegionChange', function(ev) {
+        var idx = ev.sparklines[0].getCurrentRegionFields().offset;
+        if (idx) {
+            $("#sibraspark .info").html(
+                "<strong>Settimana</strong> del " + data_SI_Bracciano[idx].date 
+              + "&nbsp;&nbsp;&nbsp; "
+              +"<strong>Percentuale Rischio</strong>:" + data_SI_Bracciano[idx].value+"%");
+        }
+    }).on('mouseout', function() {
+        $("#sibraspark .info").html("&nbsp;");
+    });
+
+$('#siangspark .chart')
+    .sparkline(
+        $.map(data_SI_Anguillara, function(wk) { return wk.value; }),
+        {  type: 'line',
+           height: '50',
+           width: '300',
+           lineColor: 'red',
+           spotColor: '#7f0000',
+           fillColor: getColorSI(data_SI_Anguillara[data_SI_Anguillara.length-1].value),
+           spotRadius: 2.5,
+           chartRangeMax: 100,
+           disableTooltips: true
+  }
+    ).on('sparklineRegionChange', function(ev) {
+        var idx = ev.sparklines[0].getCurrentRegionFields().offset;
+        if (idx) {
+            $("#siangspark .info").html(
+                "<strong>Settimana</strong> del " + data_SI_Anguillara[idx].date 
+              + "&nbsp;&nbsp;&nbsp; "
+              + "<strong>Percentuale Rischio</strong>:" + data_SI_Anguillara[idx].value+"%");
+        }
+    }).on('mouseout', function() {
+        $("#siangspark .info").html("&nbsp;");
+    });
+
+$('#sitrevspark .chart')
+    .sparkline(
+        $.map(data_SI_Trevignano, function(wk) { return wk.value; }),
+        {  type: 'line',
+           height: '50',
+           width: '300',
+           lineColor: 'red',
+           spotColor: '#7f0000',
+           fillColor: getColorSI(data_SI_Trevignano[data_SI_Trevignano.length-1].value),
+           spotRadius: 2.5,
+           chartRangeMax: 100,
+           disableTooltips: true
+  }
+    ).on('sparklineRegionChange', function(ev) {
+        var idx = ev.sparklines[0].getCurrentRegionFields().offset;
+        if (idx) {
+            $("#sitrevspark .info").html(
+                "<strong>Settimana</strong> del " + data_SI_Trevignano[idx].date 
+              + "&nbsp;&nbsp;&nbsp; "
+              + "<strong>Percentuale Rischio</strong>:" + data_SI_Trevignano[idx].value+"%");
+        }
+    }).on('mouseout', function() {
+        $("#sitrevspark .info").html("&nbsp;");
+    });
+
+$('#sicanspark .chart')
+    .sparkline(
+        $.map(data_SI_Canale, function(wk) { return wk.value; }),
+        {  type: 'line',
+           height: '50',
+           width: '300',
+           lineColor: 'red',
+           spotColor: '#7f0000',
+           fillColor: getColorSI(data_SI_Canale[data_SI_Canale.length-1].value),
+           spotRadius: 2.5,
+           chartRangeMax: 100,
+           disableTooltips: true
+  }
+    ).on('sparklineRegionChange', function(ev) {
+        var idx = ev.sparklines[0].getCurrentRegionFields().offset;
+        if (idx) {
+            $("#sicanspark .info").html(
+               "<strong>Settimana</strong> del " + data_SI_Canale[idx].date 
+              + "&nbsp;&nbsp;&nbsp; "
+              + "<strong>Percentuale Rischio</strong>:"+ data_SI_Canale[idx].value+"%");
+        }
+    }).on('mouseout', function() {
+        $("#sicanspark .info").html("&nbsp;");
+    });
+
+$('#simanzspark .chart')
+    .sparkline(
+        $.map(data_SI_Manziana, function(wk) { return wk.value; }),
+        {  type: 'line',
+           height: '50',
+           width: '300',
+           lineColor: 'red',
+           spotColor: '#7f0000',
+           fillColor: getColorSI(data_SI_Manziana[data_SI_Manziana.length-1].value),
+           spotRadius: 2.5,
+           chartRangeMax: 100,
+           disableTooltips: true
+  }
+    ).on('sparklineRegionChange', function(ev) {
+        var idx = ev.sparklines[0].getCurrentRegionFields().offset;
+        if (idx) {
+            $("#simanzspark .info").html(
+                "<strong>Settimana</strong> del " + data_SI_Manziana[idx].date 
+              + "&nbsp;&nbsp;&nbsp; "
+              + "<strong>Percentuale Rischio</strong>:" + data_SI_Manziana[idx].value+"%");
+        }
+    }).on('mouseout', function() {
+        $("#simanzspark .info").html("&nbsp;");
+
+    });
+
+</script>
+
+</body>
+</html>
+

@@ -1,2 +1,2 @@
 # ossbraccianocovid
-Punto dati per il monitoraggio della dinamica pandemica comuni area algo di bracciano.
+mappa per indicatore comunale di soglia incidenza
